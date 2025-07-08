@@ -11,6 +11,9 @@ export default function Pagination({ page, pageCount, onPageChange }: Pagination
     
   return (
     <ReactPaginate
+      previousLabel={'←'}
+      nextLabel={'→'}
+      breakLabel={'...'}
       forcePage={page - 1}
       pageCount={pageCount}
       onPageChange={(e) => onPageChange(e.selected + 1)}
@@ -19,4 +22,3 @@ export default function Pagination({ page, pageCount, onPageChange }: Pagination
     />
   );
 };
-
