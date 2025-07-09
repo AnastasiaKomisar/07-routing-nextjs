@@ -8,7 +8,7 @@ export default function Footer() {
       <p>Developer: Anastasia Komisar</p>
       <p>
         Contact us:
-        <a href="mailto:student@notehub.app">student@notehub.app</a>
+        <a href="mailto:student@notehub.app">akomisar0302@gmail.com</a>
       </p>
     </div>
   </div>

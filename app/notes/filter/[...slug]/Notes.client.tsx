@@ -25,7 +25,8 @@ export default function NotesClient({ initialData, tag = '' }: NotesClientProps)
   const perPage = 12;
 
   const trimmedSearch = debouncedSearch.trim();
-
+  const isFirstLoad = page === 1 && trimmedSearch === '' && !tag;
+  
   const {
     data,
     isLoading,
@@ -34,7 +35,7 @@ export default function NotesClient({ initialData, tag = '' }: NotesClientProps)
     queryKey: ['notes', page, trimmedSearch, tag],
     queryFn: () => fetchNotes(trimmedSearch, page, perPage, tag),
     placeholderData: keepPreviousData,
-    initialData,
+     ...(isFirstLoad ? { initialData } : {}),
     staleTime: 60 * 1000,
   });
 
