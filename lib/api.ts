@@ -16,19 +16,6 @@ export interface NewNote {
   tag: NoteTag;
 }
 
-export type Category = {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export const getCategories = async () => {
-  const res = await axios<Category[]>('/categories');
-  return res.data;
-};
-
 export const fetchNotes = async (
   search: string,
   page = 1,
@@ -68,9 +55,9 @@ export const createNote = async (note: NewNote): Promise<Note> => {
   }
 };
 
-export const deleteNote = async (id: number): Promise<Note> => {
+export const deleteNote = async (id: string): Promise<Note> => {
   try{
-    const response  = await axios.delete(`${BASE_URL}/${id}`, {
+    const response  = await axios.delete<Note>(`${BASE_URL}/${id}`, {
       headers: {
         Authorization: `Bearer ${TOKEN}`,
       }
@@ -82,7 +69,7 @@ export const deleteNote = async (id: number): Promise<Note> => {
   }
 };
 
-export const fetchNoteById = async (id: number): Promise<Note> => {
+export const fetchNoteById = async (id: string): Promise<Note> => {
   try{
   const response = await axios.get<Note>(`${BASE_URL}/${id}`, {
       headers: {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import {createPortal} from 'react-dom';
 import css from './Modal.module.css';
 
@@ -8,10 +8,12 @@ type ModalProps = {
 }
 
 export default function Modal ({children, onClose}: ModalProps) {
-  const [mounted, setMounted] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const lastFocusedElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    setMounted(true);
+    lastFocusedElement.current = document.activeElement as HTMLElement;
+    modalRef.current?.focus();
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -23,6 +25,8 @@ export default function Modal ({children, onClose}: ModalProps) {
     return () => {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener("keydown", handleEscape);
+
+      lastFocusedElement.current?.focus();
     };
 
   }, [onClose]);
@@ -31,11 +35,15 @@ export default function Modal ({children, onClose}: ModalProps) {
     if (e.target === e.currentTarget) onClose();
   };
 
-  if (!mounted) return null;
-
   return createPortal(
     <div className={css.backdrop} onClick={handleBackdropClick}>
-      <div className={css.modal} onClick={(event) => event.stopPropagation()}>
+      <div className={css.modal} 
+        onClick={(e) => e.stopPropagation()} 
+        ref={modalRef}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+      >
         {children}
       </div>
     </div>,

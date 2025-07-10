@@ -1,7 +1,8 @@
 import css from "./SidebarNotes.module.css";
 import Link from "next/link";
+import { NoteTag } from "@/types/note";
 
-const tags: string[] = [
+const tags: NoteTag[] = [
     "All",
     "Todo",
     "Work",
@@ -10,7 +11,7 @@ const tags: string[] = [
     "Shopping",
 ];
   
-export default function NotesSidebar() {
+export default function SidebarNoteTags() {
 
     return (
         <ul className={css.menuList}>

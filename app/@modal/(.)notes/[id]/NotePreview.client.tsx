@@ -6,26 +6,30 @@ import { fetchNoteById } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
 import NotePreview from "@/components/NotePreview/NotePreview";
 
-export default function NoteDetailsClient() {
+export default function NotePreviewClient() {
   const { id } = useParams();
   const router = useRouter();
-  const parseId = Number(id);
+  const parseId = String(id);
   
   const handleCloseModal = () => {
     router.back();
   };
 
   const {
-    data
+    data,
+    isLoading,
+    isError,
   } = useQuery({
-    queryKey: ["notes", parseId],
+    queryKey: ['notes', parseId],
     queryFn: () => fetchNoteById(parseId),
     refetchOnMount: false,
   });
   
   return (
     <Modal onClose={handleCloseModal}>
-      <NotePreview note={data} />
+      {isLoading && <p>Loading note details...</p>}
+      {isError && <p>Failed to load note details.</p>}
+      {data && <NotePreview note={data} />}
     </Modal>
   );
 }
