@@ -6,10 +6,14 @@ import { fetchNoteById } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
 import NotePreview from "@/components/NotePreview/NotePreview";
 
-export default function NotePreviewClient() {
-  const { id } = useParams();
+type NotePreviewClientProps = {
+  id?: number;
+};
+
+export default function NotePreviewClient({ id }: NotePreviewClientProps) {
   const router = useRouter();
-  const parseId = String(id);
+  const params = useParams();
+  const noteId = id ?? Number(params?.id);
   
   const handleCloseModal = () => {
     router.back();
@@ -20,8 +24,8 @@ export default function NotePreviewClient() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['notes', parseId],
-    queryFn: () => fetchNoteById(parseId),
+    queryKey: ['note', noteId],
+    queryFn: () => fetchNoteById(noteId),
     refetchOnMount: false,
   });
   

@@ -7,7 +7,7 @@ type FilteredNotesPageProps = {
 
 export default async function FilteredNotesPage({params,}: FilteredNotesPageProps) {
   const { slug } = await params;
-   const tag = slug[0] === "All" ? undefined : slug[0];
+  const tag = slug[0] === "All" ? undefined : slug[0];
   const initialData = await fetchNotes('', 1, 12, tag); 
   return <NotesClient initialData={initialData} tag={tag} />;
 }
